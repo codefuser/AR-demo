@@ -4,6 +4,7 @@
  *
  * Phase 2: Contains Home, Buildings, CreateBuilding, BuildingDetails, Settings, About.
  * Phase 3: Added CameraScreen.
+ * Phase 4: Added ARStatusScreen.
  */
 
 import React from 'react';
@@ -14,6 +15,7 @@ import {
   CreateBuildingScreen,
   BuildingDetailsScreen,
   CameraScreen,
+  ARStatusScreen,
   SettingsScreen,
   AboutScreen,
 } from '../screens';
@@ -76,6 +78,11 @@ const MainNavigator: React.FC = () => {
         name={MAIN_ROUTES.CAMERA}
         component={CameraScreen}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={MAIN_ROUTES.AR_STATUS}
+        component={ARStatusScreen}
+        options={{ title: 'AR Engine Status' }}
       />
       <Stack.Screen
         name={MAIN_ROUTES.SETTINGS}

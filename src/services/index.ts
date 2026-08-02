@@ -5,3 +5,4 @@
 
 export * from './buildingService';
 export * from './cameraService';
+export * from './arService';

@@ -62,6 +62,15 @@ const MENU_ITEMS = [
     testID: 'home-btn-camera',
   },
   {
+    id: 'ar_status',
+    icon: 'cube-scan' as const,
+    label: 'AR Tracking Engine',
+    subtitle: 'Real-time 6-DOF spatial pose & device telemetry',
+    route: MAIN_ROUTES.AR_STATUS,
+    color: '#8B5CF6',
+    testID: 'home-btn-ar-status',
+  },
+  {
     id: 'settings',
     icon: 'cog-outline' as const,
     label: APP_STRINGS.HOME_BTN_SETTINGS,

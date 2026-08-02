@@ -14,6 +14,10 @@
  * Phase 3 additions:
  *  - Camera navigation param
  *  - Re-export camera types
+ *
+ * Phase 4 additions:
+ *  - ARStatus navigation param
+ *  - Re-export AR types
  */
 
 // ---------------------------------------------------------------------------
@@ -32,6 +36,7 @@ export type RootStackParamList = {
  * Main stack navigator param list.
  * Phase 2: Added BuildingDetails with a required buildingId param.
  * Phase 3: Added Camera route.
+ * Phase 4: Added ARStatus route.
  */
 export type MainStackParamList = {
   Home: undefined;
@@ -39,6 +44,7 @@ export type MainStackParamList = {
   CreateBuilding: { editId?: string } | undefined;
   BuildingDetails: { buildingId: string };
   Camera: { buildingId?: string } | undefined;
+  ARStatus: undefined;
   Settings: undefined;
   About: undefined;
 };
@@ -178,7 +184,7 @@ export interface BuildingState {
   /** Remove a building from the list by ID. */
   deleteBuilding: (id: string) => void;
 
-  // ── Selection ─────────────────────────────────────────────────────────────
+  // ── Selection ────────────────────────────────----------------─────────────
   /** Set the currently selected building ID (null to deselect). */
   selectBuilding: (id: string | null) => void;
 
@@ -188,6 +194,7 @@ export interface BuildingState {
 }
 
 // ---------------------------------------------------------------------------
-// Re-export Camera Types
+// Re-export Camera & AR Types
 // ---------------------------------------------------------------------------
 export * from './camera';
+export * from './ar';
