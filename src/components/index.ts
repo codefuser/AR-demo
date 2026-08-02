@@ -10,3 +10,6 @@ export { default as PrimaryButton } from './PrimaryButton';
 export { default as ScreenContainer } from './ScreenContainer';
 export { default as SectionHeader } from './SectionHeader';
 export { default as MenuCard } from './MenuCard';
+export { default as StatusBadge } from './StatusBadge';
+export { default as BuildingTypePicker } from './BuildingTypePicker';
+export { default as BuildingCard } from './BuildingCard';

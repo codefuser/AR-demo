@@ -1,83 +1,116 @@
 /**
  * @file src/screens/CreateBuildingScreen.tsx
- * @description Create Building screen.
+ * @description Create / Edit Building screen.
  *
- * Presents a form for entering building details.
- * Phase 1: Form UI only — validates inputs via react-hook-form.
- *          On submit, creates an in-memory building via the building service
- *          and adds it to the Zustand store (no persistence).
- * Phase 2: Will persist the building to SQLite on submit.
+ * Presents a form for entering building details:
+ *  - Building Name * (required, min 2, max 80)
+ *  - Description
+ *  - Number of Floors * (required, min 1, max 100)
+ *  - Address
+ *  - Building Type * (College, School, Mall, Hospital, Office, Other)
+ *  - Thumbnail Image (placeholder)
+ *
+ * Phase 2: Saves building to Zustand store and navigates directly to BuildingDetails.
  */
 
-import React from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, Alert, Pressable } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RouteProp } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
 import { TextInput, HelperText } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '../hooks/useAppTheme';
-import { ScreenContainer, PrimaryButton, SectionHeader } from '../components';
+import { ScreenContainer, PrimaryButton, SectionHeader, BuildingTypePicker } from '../components';
 import { useBuildingStore } from '../store';
-import { createBuilding } from '../services/buildingService';
+import { createBuilding, updateBuilding as updateBuildingService } from '../services/buildingService';
 import { APP_STRINGS } from '../constants/strings';
-import type { MainStackParamList, CreateBuildingPayload } from '../types';
+import { MAIN_ROUTES } from '../constants/routes';
+import type { MainStackParamList, CreateBuildingPayload, BuildingType } from '../types';
 
 type CreateBuildingScreenProps = {
   navigation: NativeStackNavigationProp<MainStackParamList, 'CreateBuilding'>;
+  route: RouteProp<MainStackParamList, 'CreateBuilding'>;
 };
 
-/**
- * Form field values — mirrors CreateBuildingPayload with string floorCount
- * (text input) that is parsed to a number before submission.
- */
 interface FormValues {
   name: string;
   description: string;
+  address: string;
   floorCount: string;
+  buildingType: BuildingType;
 }
 
-/**
- * Create Building form screen using react-hook-form for validation.
- */
 const CreateBuildingScreen: React.FC<CreateBuildingScreenProps> = ({
   navigation,
+  route,
 }) => {
+  const editId = route.params?.editId;
   const { theme } = useAppTheme();
   const { colors, spacing, typography, borderRadius } = theme.custom;
+  
   const addBuilding = useBuildingStore((s) => s.addBuilding);
+  const updateBuildingStore = useBuildingStore((s) => s.updateBuilding);
+  const buildings = useBuildingStore((s) => s.buildings);
+  
+  const existingBuilding = editId ? buildings.find((b) => b.id === editId) : undefined;
 
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<FormValues>({
     defaultValues: {
-      name: '',
-      description: '',
-      floorCount: '1',
+      name: existingBuilding?.name || '',
+      description: existingBuilding?.description || '',
+      address: existingBuilding?.address || '',
+      floorCount: existingBuilding?.floorCount ? String(existingBuilding.floorCount) : '1',
+      buildingType: existingBuilding?.buildingType || 'college',
     },
   });
 
-  /**
-   * Handle form submission.
-   * Phase 1: Creates an in-memory building and adds it to the Zustand store.
-   */
+  useEffect(() => {
+    if (existingBuilding) {
+      setValue('name', existingBuilding.name);
+      setValue('description', existingBuilding.description || '');
+      setValue('address', existingBuilding.address || '');
+      setValue('floorCount', String(existingBuilding.floorCount));
+      setValue('buildingType', existingBuilding.buildingType);
+    }
+  }, [existingBuilding, setValue]);
+
   const onSubmit = async (data: FormValues) => {
-    const payload: CreateBuildingPayload = {
-      name: data.name.trim(),
-      description: data.description.trim() || undefined,
-      floorCount: parseInt(data.floorCount, 10),
-    };
+    const floorNum = parseInt(data.floorCount, 10);
+    
+    if (existingBuilding) {
+      const updated = await updateBuildingService(existingBuilding, {
+        name: data.name.trim(),
+        description: data.description.trim() || undefined,
+        address: data.address.trim() || undefined,
+        floorCount: floorNum,
+        buildingType: data.buildingType,
+      });
+      updateBuildingStore(existingBuilding.id, updated);
+      reset();
+      navigation.goBack();
+    } else {
+      const payload: CreateBuildingPayload = {
+        name: data.name.trim(),
+        description: data.description.trim() || undefined,
+        address: data.address.trim() || undefined,
+        floorCount: floorNum,
+        buildingType: data.buildingType,
+      };
 
-    const building = await createBuilding(payload);
-    addBuilding(building);
-    reset();
+      const newBuilding = await createBuilding(payload);
+      addBuilding(newBuilding);
+      reset();
 
-    Alert.alert(
-      'Building Created',
-      `"${building.name}" has been created successfully.`,
-      [{ text: 'OK', onPress: () => navigation.goBack() }],
-    );
+      // Navigate to Building Details as per workflow: Home -> Buildings -> Create -> Save -> Building Details
+      navigation.replace(MAIN_ROUTES.BUILDING_DETAILS, { buildingId: newBuilding.id });
+    }
   };
 
   const inputTheme = {
@@ -91,6 +124,7 @@ const CreateBuildingScreen: React.FC<CreateBuildingScreenProps> = ({
   const styles = StyleSheet.create({
     form: {
       gap: spacing.md,
+      paddingBottom: spacing.xl,
     },
     label: {
       fontSize: typography.fontSize.sm,
@@ -101,23 +135,36 @@ const CreateBuildingScreen: React.FC<CreateBuildingScreenProps> = ({
     field: {
       marginBottom: spacing.xs,
     },
-    submitWrapper: {
-      marginTop: spacing.lg,
+    thumbnailBox: {
+      height: 100,
+      borderRadius: borderRadius.md,
+      borderWidth: 1.5,
+      borderColor: colors.border,
+      borderStyle: 'dashed',
+      backgroundColor: colors.surfaceVariant,
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: spacing.xs,
     },
-    noteText: {
+    thumbnailText: {
       fontSize: typography.fontSize.xs,
       color: colors.textMuted,
-      textAlign: 'center',
+    },
+    buttonRow: {
+      flexDirection: 'row',
+      gap: spacing.md,
       marginTop: spacing.md,
-      lineHeight: typography.fontSize.xs * 1.6,
+    },
+    buttonFlex: {
+      flex: 1,
     },
   });
 
   return (
     <ScreenContainer scrollable avoidKeyboard padding={spacing.md} testID="create-building-screen">
       <SectionHeader
-        title={APP_STRINGS.CREATE_BUILDING_TITLE}
-        subtitle="Fill in the details for your new indoor building"
+        title={existingBuilding ? APP_STRINGS.CREATE_BUILDING_EDIT_TITLE : APP_STRINGS.CREATE_BUILDING_TITLE}
+        subtitle={APP_STRINGS.CREATE_BUILDING_SUBTITLE}
       />
 
       <View style={styles.form}>
@@ -144,13 +191,54 @@ const CreateBuildingScreen: React.FC<CreateBuildingScreenProps> = ({
                 theme={inputTheme}
                 testID="input-building-name"
                 autoCapitalize="words"
-                returnKeyType="next"
               />
             )}
           />
-          {errors.name && (
-            <HelperText type="error">{errors.name.message}</HelperText>
-          )}
+          {errors.name && <HelperText type="error">{errors.name.message}</HelperText>}
+        </View>
+
+        {/* Building Type Selector */}
+        <View>
+          <Text style={styles.label}>{APP_STRINGS.CREATE_BUILDING_TYPE_LABEL}</Text>
+          <Controller
+            control={control}
+            name="buildingType"
+            render={({ field: { value, onChange } }) => (
+              <BuildingTypePicker value={value} onChange={onChange} testID="picker-building-type" />
+            )}
+          />
+        </View>
+
+        {/* Number of Floors */}
+        <View>
+          <Text style={styles.label}>{APP_STRINGS.CREATE_BUILDING_FLOOR_LABEL}</Text>
+          <Controller
+            control={control}
+            name="floorCount"
+            rules={{
+              required: 'Floor count is required',
+              validate: (val) => {
+                const n = parseInt(val, 10);
+                if (isNaN(n) || n < 1) return 'Floor count must be at least 1';
+                if (n > 100) return 'Floor count cannot exceed 100';
+                return true;
+              },
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                mode="outlined"
+                keyboardType="number-pad"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                error={!!errors.floorCount}
+                style={styles.field}
+                theme={inputTheme}
+                testID="input-floor-count"
+              />
+            )}
+          />
+          {errors.floorCount && <HelperText type="error">{errors.floorCount.message}</HelperText>}
         </View>
 
         {/* Description */}
@@ -176,56 +264,60 @@ const CreateBuildingScreen: React.FC<CreateBuildingScreenProps> = ({
           />
         </View>
 
-        {/* Floor Count */}
+        {/* Address */}
         <View>
-          <Text style={styles.label}>{APP_STRINGS.CREATE_BUILDING_FLOOR_LABEL}</Text>
+          <Text style={styles.label}>{APP_STRINGS.CREATE_BUILDING_ADDRESS_LABEL}</Text>
           <Controller
             control={control}
-            name="floorCount"
-            rules={{
-              required: 'Floor count is required',
-              validate: (val) => {
-                const n = parseInt(val, 10);
-                if (isNaN(n) || n < 1) return 'Enter a valid number of floors (min: 1)';
-                if (n > 200) return 'Floor count cannot exceed 200';
-                return true;
-              },
-            }}
+            name="address"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
                 mode="outlined"
-                keyboardType="number-pad"
+                placeholder={APP_STRINGS.CREATE_BUILDING_ADDRESS_PLACEHOLDER}
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                error={!!errors.floorCount}
                 style={styles.field}
                 theme={inputTheme}
-                testID="input-floor-count"
-                returnKeyType="done"
+                testID="input-building-address"
               />
             )}
           />
-          {errors.floorCount && (
-            <HelperText type="error">{errors.floorCount.message}</HelperText>
-          )}
         </View>
 
-        {/* Submit */}
-        <View style={styles.submitWrapper}>
-          <PrimaryButton
-            label={APP_STRINGS.CREATE_BUILDING_SUBMIT}
-            icon="content-save-outline"
-            onPress={handleSubmit(onSubmit)}
-            loading={isSubmitting}
-            testID="btn-save-building"
-          />
+        {/* Thumbnail Image (Placeholder) */}
+        <View>
+          <Text style={styles.label}>{APP_STRINGS.CREATE_BUILDING_THUMBNAIL_LABEL}</Text>
+          <Pressable
+            onPress={() => Alert.alert(APP_STRINGS.COMMON_COMING_SOON, 'Thumbnail upload will be available in Phase 3.')}
+          >
+            <View style={styles.thumbnailBox}>
+              <MaterialCommunityIcons name="image-plus" size={28} color={colors.textMuted} />
+              <Text style={styles.thumbnailText}>{APP_STRINGS.CREATE_BUILDING_THUMBNAIL_PLACEHOLDER}</Text>
+            </View>
+          </Pressable>
         </View>
 
-        <Text style={styles.noteText}>
-          Phase 1 — building data is stored in memory only.{'\n'}
-          Persistent storage will be added in Phase 2.
-        </Text>
+        {/* Buttons */}
+        <View style={styles.buttonRow}>
+          <View style={styles.buttonFlex}>
+            <PrimaryButton
+              label={APP_STRINGS.CREATE_BUILDING_CANCEL}
+              mode="outlined"
+              onPress={() => navigation.goBack()}
+              testID="btn-cancel-building"
+            />
+          </View>
+          <View style={styles.buttonFlex}>
+            <PrimaryButton
+              label={APP_STRINGS.CREATE_BUILDING_SUBMIT}
+              icon="content-save-outline"
+              onPress={handleSubmit(onSubmit)}
+              loading={isSubmitting}
+              testID="btn-save-building"
+            />
+          </View>
+        </View>
       </View>
     </ScreenContainer>
   );

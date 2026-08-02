@@ -2,9 +2,7 @@
  * @file src/navigation/MainNavigator.tsx
  * @description Main stack navigator — screens accessible after onboarding.
  *
- * Contains: Home, Buildings, CreateBuilding, Settings, About.
- * The navigator is nested inside RootNavigator and receives the theme-aware
- * header style from the parent.
+ * Phase 2: Contains Home, Buildings, CreateBuilding, BuildingDetails, Settings, About.
  */
 
 import React from 'react';
@@ -13,6 +11,7 @@ import {
   HomeScreen,
   BuildingsScreen,
   CreateBuildingScreen,
+  BuildingDetailsScreen,
   SettingsScreen,
   AboutScreen,
 } from '../screens';
@@ -24,9 +23,6 @@ const Stack = createNativeStackNavigator<MainStackParamList>();
 
 /**
  * Main application stack navigator.
- *
- * Header style adapts to the active color scheme.
- * The home screen hides the header (custom header band in HomeScreen component).
  */
 const MainNavigator: React.FC = () => {
   const { theme } = useAppTheme();
@@ -65,7 +61,14 @@ const MainNavigator: React.FC = () => {
       <Stack.Screen
         name={MAIN_ROUTES.CREATE_BUILDING}
         component={CreateBuildingScreen}
-        options={{ title: 'New Building' }}
+        options={({ route }) => ({
+          title: route.params?.editId ? 'Edit Building' : 'New Building',
+        })}
+      />
+      <Stack.Screen
+        name={MAIN_ROUTES.BUILDING_DETAILS}
+        component={BuildingDetailsScreen}
+        options={{ title: 'Building Details' }}
       />
       <Stack.Screen
         name={MAIN_ROUTES.SETTINGS}
