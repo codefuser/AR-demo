@@ -5,3 +5,5 @@
 
 export { default as useAppTheme } from './useAppTheme';
 export type { UseAppThemeReturn } from './useAppTheme';
+export { default as useCamera } from './useCamera';
+export type { UseCameraReturn } from './useCamera';

@@ -3,6 +3,7 @@
  * @description Main stack navigator — screens accessible after onboarding.
  *
  * Phase 2: Contains Home, Buildings, CreateBuilding, BuildingDetails, Settings, About.
+ * Phase 3: Added CameraScreen.
  */
 
 import React from 'react';
@@ -12,6 +13,7 @@ import {
   BuildingsScreen,
   CreateBuildingScreen,
   BuildingDetailsScreen,
+  CameraScreen,
   SettingsScreen,
   AboutScreen,
 } from '../screens';
@@ -69,6 +71,11 @@ const MainNavigator: React.FC = () => {
         name={MAIN_ROUTES.BUILDING_DETAILS}
         component={BuildingDetailsScreen}
         options={{ title: 'Building Details' }}
+      />
+      <Stack.Screen
+        name={MAIN_ROUTES.CAMERA}
+        component={CameraScreen}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name={MAIN_ROUTES.SETTINGS}

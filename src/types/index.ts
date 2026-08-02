@@ -10,6 +10,10 @@
  *  - UpdateBuildingPayload type
  *  - BuildingDetails navigation param
  *  - Expanded BuildingState (updateBuilding, deleteBuilding, getBuildingById)
+ *
+ * Phase 3 additions:
+ *  - Camera navigation param
+ *  - Re-export camera types
  */
 
 // ---------------------------------------------------------------------------
@@ -27,12 +31,14 @@ export type RootStackParamList = {
 /**
  * Main stack navigator param list.
  * Phase 2: Added BuildingDetails with a required buildingId param.
+ * Phase 3: Added Camera route.
  */
 export type MainStackParamList = {
   Home: undefined;
   Buildings: undefined;
   CreateBuilding: { editId?: string } | undefined;
   BuildingDetails: { buildingId: string };
+  Camera: { buildingId?: string } | undefined;
   Settings: undefined;
   About: undefined;
 };
@@ -180,3 +186,8 @@ export interface BuildingState {
   setLoading: (value: boolean) => void;
   setError: (message: string | null) => void;
 }
+
+// ---------------------------------------------------------------------------
+// Re-export Camera Types
+// ---------------------------------------------------------------------------
+export * from './camera';

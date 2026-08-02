@@ -53,6 +53,15 @@ const MENU_ITEMS = [
     testID: 'home-btn-buildings',
   },
   {
+    id: 'camera',
+    icon: 'camera-outline' as const,
+    label: 'Camera Module',
+    subtitle: 'Test camera preview and image capture',
+    route: MAIN_ROUTES.CAMERA,
+    color: '#EC4899',
+    testID: 'home-btn-camera',
+  },
+  {
     id: 'settings',
     icon: 'cog-outline' as const,
     label: APP_STRINGS.HOME_BTN_SETTINGS,

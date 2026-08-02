@@ -1,7 +1,7 @@
 /**
  * @file src/constants/routes.ts
  * @description Centralised route name constants for React Navigation.
- * Phase 2: Added BUILDING_DETAILS.
+ * Phase 3: Added CAMERA.
  */
 
 /** Root stack route names. */
@@ -16,6 +16,7 @@ export const MAIN_ROUTES = {
   BUILDINGS: 'Buildings',
   CREATE_BUILDING: 'CreateBuilding',
   BUILDING_DETAILS: 'BuildingDetails',
+  CAMERA: 'Camera',
   SETTINGS: 'Settings',
   ABOUT: 'About',
 } as const;

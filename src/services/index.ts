@@ -4,3 +4,4 @@
  */
 
 export * from './buildingService';
+export * from './cameraService';

@@ -230,7 +230,7 @@ const BuildingDetailsScreen: React.FC<BuildingDetailsScreenProps> = ({
         {/* Actions */}
         <Text style={styles.sectionTitle}>{APP_STRINGS.BUILDING_DETAILS_ACTIONS_SECTION}</Text>
         <View style={styles.actionSection}>
-          {/* Start Scanning — Disabled in Phase 2 */}
+          {/* Start Scanning — Disabled in Phase 2/3 (Scanning engine is Phase 4) */}
           <PrimaryButton
             label={APP_STRINGS.BUILDING_DETAILS_BTN_SCAN}
             icon="radar"
@@ -239,6 +239,15 @@ const BuildingDetailsScreen: React.FC<BuildingDetailsScreenProps> = ({
             testID="btn-start-scanning"
           />
           <Text style={styles.disabledNote}>{APP_STRINGS.BUILDING_DETAILS_BTN_SCAN_DISABLED}</Text>
+
+          {/* Test Camera Module */}
+          <PrimaryButton
+            label="Test Camera Module"
+            icon="camera-outline"
+            mode="outlined"
+            onPress={() => navigation.navigate(MAIN_ROUTES.CAMERA, { buildingId: building.id })}
+            testID="btn-test-camera"
+          />
 
           {/* Edit Building */}
           <PrimaryButton
