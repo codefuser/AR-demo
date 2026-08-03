@@ -2,21 +2,34 @@
   "expo": {
     "name": "AR_project_first_demo",
     "slug": "AR_project_first_demo",
+    "scheme": "ar-indoor-nav",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "newArchEnabled": false,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.arindoornav.buildingmapping",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Allow AR Indoor Nav to access your camera for building scanning and AR navigation.",
+        "NSMotionUsageDescription": "Allow AR Indoor Nav to access motion sensors for spatial tracking."
+      }
     },
     "android": {
+      "package": "com.arindoornav.buildingmapping",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "CAMERA",
+        "HIGH_SAMPLING_RATE_SENSORS",
+        "BODY_SENSORS"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
