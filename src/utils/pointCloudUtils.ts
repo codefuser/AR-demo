@@ -1,6 +1,6 @@
 /**
  * @file src/utils/pointCloudUtils.ts
- * @description Utilities for point cloud memory estimation, vertex filtering, and average point statistics.
+ * @description Utilities for real point cloud memory estimation, vertex filtering, and point statistics.
  */
 
 import type { Vector3D } from '../types/ar';
@@ -49,32 +49,4 @@ export function calculateAveragePointsPerFrame(frames: PointCloudFrame[]): numbe
   if (frames.length === 0) return 0;
   const totalPoints = frames.reduce((acc, f) => acc + f.pointCount, 0);
   return Math.round(totalPoints / frames.length);
-}
-
-/**
- * Simulates raw 3D feature point cloud vertex extraction around camera pose.
- */
-export function generateMockFeaturePointCloud(
-  cameraPos: Vector3D,
-  count = 150,
-): { vertices: Vector3D[]; confidences: number[] } {
-  const vertices: Vector3D[] = [];
-  const confidences: number[] = [];
-
-  for (let i = 0; i < count; i++) {
-    // Distribute points in 3D spatial field around camera position
-    const offsetX = (Math.random() - 0.5) * 5.0;
-    const offsetY = (Math.random() - 0.5) * 3.0;
-    const offsetZ = Math.random() * 4.0 + 0.5;
-
-    vertices.push({
-      x: Number((cameraPos.x + offsetX).toFixed(3)),
-      y: Number((cameraPos.y + offsetY).toFixed(3)),
-      z: Number((cameraPos.z + offsetZ).toFixed(3)),
-    });
-
-    confidences.push(Number((Math.random() * 0.4 + 0.6).toFixed(2))); // 0.60 to 1.00
-  }
-
-  return { vertices, confidences };
 }

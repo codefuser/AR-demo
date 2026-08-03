@@ -5,16 +5,44 @@
  * Provides typed functional calls to:
  *  - Native ARCore installation checks
  *  - Native Session initialization & controls (start, pause, resume, destroy)
- *  - Listening to native Android hardware events (`onSessionStateChanged`)
+ *  - Listening to native events: `onSessionStateChanged`, `onCameraPoseUpdated`, `onPointCloudUpdated`
  */
 
 import { NativeModules, NativeEventEmitter, Platform } from 'react-native';
+import type { Vector3D, EulerAngles, Quaternion, ARTrackingQuality } from '../../../types/ar';
+import type { ARNativeTrackingState } from '../../../types/arNative';
 
 const { ARCoreNativeModule } = NativeModules;
+
+export interface NativeCameraPosePayload {
+  position: Vector3D;
+  rotation: EulerAngles;
+  quaternion: Quaternion;
+  trackingState: ARNativeTrackingState;
+  trackingFailureReason: string;
+  timestamp: number;
+  frameNumber: number;
+}
+
+export interface NativePointCloudPoint {
+  x: number;
+  y: number;
+  z: number;
+  confidence: number;
+}
+
+export interface NativePointCloudPayload {
+  frameId: string;
+  pointCount: number;
+  points: NativePointCloudPoint[];
+  timestamp: number;
+  trackingState: ARNativeTrackingState;
+}
 
 export interface ARCoreNativeModuleInterface {
   ARCORE_VERSION: string;
   IS_NATIVE_READY: boolean;
+  IS_REAL_HARDWARE_CONNECTED?: boolean;
   isARCoreInstalled(): Promise<boolean>;
   initializeSession(): Promise<boolean>;
   pauseSession(): Promise<boolean>;
@@ -114,6 +142,28 @@ class ARCoreNativeBridgeService {
   public subscribeNativeState(listener: (data: { status: string }) => void): () => void {
     if (this.eventEmitter) {
       const subscription = this.eventEmitter.addListener('onSessionStateChanged', listener);
+      return () => subscription.remove();
+    }
+    return () => {};
+  }
+
+  /**
+   * Subscribes to real camera pose updates from native ARCore.
+   */
+  public subscribeCameraPose(listener: (payload: NativeCameraPosePayload) => void): () => void {
+    if (this.eventEmitter) {
+      const subscription = this.eventEmitter.addListener('onCameraPoseUpdated', listener);
+      return () => subscription.remove();
+    }
+    return () => {};
+  }
+
+  /**
+   * Subscribes to real hardware point cloud updates from native Frame.acquirePointCloud().
+   */
+  public subscribePointCloud(listener: (payload: NativePointCloudPayload) => void): () => void {
+    if (this.eventEmitter) {
+      const subscription = this.eventEmitter.addListener('onPointCloudUpdated', listener);
       return () => subscription.remove();
     }
     return () => {};
