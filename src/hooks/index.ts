@@ -13,3 +13,4 @@ export { default as useARTracking } from './useARTracking';
 export * from './arNativeHooks';
 export * from './useScanSession';
 export * from './useScanPoint';
+export * from './usePointCloud';

@@ -27,3 +27,4 @@ export { default as ScanProgressCard } from './ScanProgressCard';
 export { default as ScanValidationCard } from './ScanValidationCard';
 export { default as ScanPointLiveCard } from './ScanPointLiveCard';
 export { default as ScanPointFeedCard } from './ScanPointFeedCard';
+export { default as PointCloudLiveCard } from './PointCloudLiveCard';
