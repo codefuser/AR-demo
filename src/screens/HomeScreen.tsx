@@ -80,6 +80,15 @@ const MENU_ITEMS = [
     testID: 'home-btn-ar-diagnostics',
   },
   {
+    id: 'scan_session',
+    icon: 'radar' as const,
+    label: 'Scan Building Controller',
+    subtitle: 'Building scan session lifecycle & progress controller',
+    route: MAIN_ROUTES.SCAN_SESSION,
+    color: '#059669',
+    testID: 'home-btn-scan-session',
+  },
+  {
     id: 'settings',
     icon: 'cog-outline' as const,
     label: APP_STRINGS.HOME_BTN_SETTINGS,

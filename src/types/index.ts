@@ -22,6 +22,10 @@
  * Phase 5A additions:
  *  - ARDiagnostics navigation param
  *  - Re-export AR Native types
+ *
+ * Phase 5B.1 additions:
+ *  - ScanSession navigation param
+ *  - Re-export ScanSession types
  */
 
 // ---------------------------------------------------------------------------
@@ -42,6 +46,7 @@ export type RootStackParamList = {
  * Phase 3: Added Camera route.
  * Phase 4: Added ARStatus route.
  * Phase 5A: Added ARDiagnostics route.
+ * Phase 5B.1: Added ScanSession route.
  */
 export type MainStackParamList = {
   Home: undefined;
@@ -51,6 +56,7 @@ export type MainStackParamList = {
   Camera: { buildingId?: string } | undefined;
   ARStatus: undefined;
   ARDiagnostics: undefined;
+  ScanSession: { buildingId?: string; buildingName?: string; floor?: number } | undefined;
   Settings: undefined;
   About: undefined;
 };
@@ -200,8 +206,9 @@ export interface BuildingState {
 }
 
 // ---------------------------------------------------------------------------
-// Re-export Camera & AR Types
+// Re-export Camera & AR & Scan Session Types
 // ---------------------------------------------------------------------------
 export * from './camera';
 export * from './ar';
 export * from './arNative';
+export * from './scanSession';

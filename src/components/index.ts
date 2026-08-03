@@ -23,3 +23,5 @@ export { default as ARDiagnosticsHeader } from './ARDiagnosticsHeader';
 export { default as ARPlanesSummaryCard } from './ARPlanesSummaryCard';
 export { default as ARAnchorsTestCard } from './ARAnchorsTestCard';
 export { default as ARSystemDiagnosticsCard } from './ARSystemDiagnosticsCard';
+export { default as ScanProgressCard } from './ScanProgressCard';
+export { default as ScanValidationCard } from './ScanValidationCard';

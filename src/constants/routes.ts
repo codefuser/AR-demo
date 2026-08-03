@@ -3,6 +3,7 @@
  * @description Centralised route name constants for React Navigation.
  * Phase 4: Added AR_STATUS.
  * Phase 5A: Added AR_DIAGNOSTICS.
+ * Phase 5B.1: Added SCAN_SESSION.
  */
 
 /** Root stack route names. */
@@ -20,6 +21,7 @@ export const MAIN_ROUTES = {
   CAMERA: 'Camera',
   AR_STATUS: 'ARStatus',
   AR_DIAGNOSTICS: 'ARDiagnostics',
+  SCAN_SESSION: 'ScanSession',
   SETTINGS: 'Settings',
   ABOUT: 'About',
 } as const;
