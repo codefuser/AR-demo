@@ -8,6 +8,7 @@
  * Phase 5A: Added ARDiagnosticsScreen.
  * Phase 5B.1: Added ScanSessionScreen.
  * Phase 5C.3: Added PlaneDiagnosticsScreen.
+ * Phase 5C.4: Added WalkthroughScreen.
  */
 
 import React from 'react';
@@ -22,6 +23,7 @@ import {
   ARDiagnosticsScreen,
   PlaneDiagnosticsScreen,
   ScanSessionScreen,
+  WalkthroughScreen,
   SettingsScreen,
   AboutScreen,
 } from '../screens';
@@ -104,6 +106,11 @@ const MainNavigator: React.FC = () => {
         name={MAIN_ROUTES.SCAN_SESSION}
         component={ScanSessionScreen}
         options={{ title: 'Scan Building' }}
+      />
+      <Stack.Screen
+        name={MAIN_ROUTES.WALKTHROUGH}
+        component={WalkthroughScreen}
+        options={{ title: 'Walkthrough Controller' }}
       />
       <Stack.Screen
         name={MAIN_ROUTES.SETTINGS}

@@ -13,5 +13,6 @@ export { default as ARStatusScreen } from './ARStatusScreen';
 export { default as ARDiagnosticsScreen } from './ARDiagnosticsScreen';
 export { default as PlaneDiagnosticsScreen } from './PlaneDiagnosticsScreen';
 export { default as ScanSessionScreen } from './ScanSessionScreen';
+export { default as WalkthroughScreen } from './WalkthroughScreen';
 export { default as SettingsScreen } from './SettingsScreen';
 export { default as AboutScreen } from './AboutScreen';

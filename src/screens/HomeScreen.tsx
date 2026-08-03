@@ -5,7 +5,7 @@
  * Serves as the main entry point after the splash screen. Displays:
  *  - Application logo
  *  - Project name and tagline
- *  - Primary navigation cards (Create Building, Buildings, Camera, AR Status, AR Diagnostics, Real Plane Detection, Scan Controller, Settings, About)
+ *  - Primary navigation cards (Create Building, Buildings, Camera, AR Status, AR Diagnostics, Real Plane Detection, Walkthrough Engine, Scan Controller, Settings, About)
  *
  * Design: Dark/light adaptive, gradient header band, animated card entrance.
  */
@@ -69,6 +69,15 @@ const MENU_ITEMS = [
     route: MAIN_ROUTES.AR_STATUS,
     color: '#8B5CF6',
     testID: 'home-btn-ar-status',
+  },
+  {
+    id: 'walkthrough',
+    icon: 'walk' as const,
+    label: 'Building Walkthrough Engine',
+    subtitle: 'Indoor walking analysis & live AR user guidance',
+    route: MAIN_ROUTES.WALKTHROUGH,
+    color: '#E11D48',
+    testID: 'home-btn-walkthrough',
   },
   {
     id: 'plane_diagnostics',

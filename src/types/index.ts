@@ -30,6 +30,10 @@
  * Phase 5C.3 additions:
  *  - PlaneDiagnostics navigation param
  *  - Re-export Plane types
+ *
+ * Phase 5C.4 additions:
+ *  - Walkthrough navigation param
+ *  - Re-export Walkthrough types
  */
 
 // ---------------------------------------------------------------------------
@@ -52,6 +56,7 @@ export type RootStackParamList = {
  * Phase 5A: Added ARDiagnostics route.
  * Phase 5B.1: Added ScanSession route.
  * Phase 5C.3: Added PlaneDiagnostics route.
+ * Phase 5C.4: Added Walkthrough route.
  */
 export type MainStackParamList = {
   Home: undefined;
@@ -63,6 +68,7 @@ export type MainStackParamList = {
   ARDiagnostics: undefined;
   PlaneDiagnostics: undefined;
   ScanSession: { buildingId?: string; buildingName?: string; floor?: number } | undefined;
+  Walkthrough: { buildingId?: string; buildingName?: string; floor?: number } | undefined;
   Settings: undefined;
   About: undefined;
 };
@@ -212,10 +218,11 @@ export interface BuildingState {
 }
 
 // ---------------------------------------------------------------------------
-// Re-export Camera & AR & Scan Session & Plane Types
+// Re-export Camera & AR & Scan Session & Plane & Walkthrough Types
 // ---------------------------------------------------------------------------
 export * from './camera';
 export * from './ar';
 export * from './arNative';
 export * from './scanSession';
 export * from './plane';
+export * from './walkthrough';

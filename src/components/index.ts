@@ -30,3 +30,6 @@ export { default as ScanPointFeedCard } from './ScanPointFeedCard';
 export { default as PointCloudLiveCard } from './PointCloudLiveCard';
 export { default as PlaneSummaryCard } from './PlaneSummaryCard';
 export { default as PlaneListCard } from './PlaneListCard';
+export { default as WalkthroughHeaderCard } from './WalkthroughHeaderCard';
+export { default as WalkthroughTelemetryCard } from './WalkthroughTelemetryCard';
+export { default as WalkthroughGuidanceCard } from './WalkthroughGuidanceCard';
