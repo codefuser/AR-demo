@@ -1,11 +1,14 @@
 /**
  * @file src/screens/ScanSessionScreen.tsx
- * @description Scan Session Controller Screen — Phase 5B.1 Building Scan Session Engine.
+ * @description Scan Session Controller & Scan Point Capture Screen — Phase 5B.2.
  *
  * Full building scan session dashboard displaying:
  *  - Building Name, Floor #, and Session Status Badge
  *  - Pre-scan validation checklist (Building, Camera Permission, AR Ready, Device Compatibility)
  *  - Real-time Scan Progress %, Stage indicator, Elapsed & Est. Remaining timers
+ *  - Live Scan Point Capture Telemetry Card (`ScanPointLiveCard`)
+ *  - Recent Scan Points Feed Card (`ScanPointFeedCard`)
+ *  - Real-time 6-DOF Pose & Tracking Card (`ARPoseCard`)
  *  - Session Operations Suite: Start Scan, Pause, Resume, Cancel, Finish, Reset
  */
 
@@ -16,6 +19,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAppTheme } from '../hooks/useAppTheme';
 import { useBuildingStore } from '../store';
 import { useScanSession, useScanSessionControl } from '../hooks/useScanSession';
+import { useScanPoints, useScanPointStats, useScanPointCapture } from '../hooks/useScanPoint';
 import { useARTracking } from '../hooks/useARTracking';
 import {
   ScreenContainer,
@@ -24,6 +28,8 @@ import {
   StatusBadge,
   ScanProgressCard,
   ScanValidationCard,
+  ScanPointLiveCard,
+  ScanPointFeedCard,
   ARPoseCard,
 } from '../components';
 import type { MainStackParamList, BuildingState, Building } from '../types';
@@ -56,6 +62,11 @@ const ScanSessionScreen: React.FC<ScanSessionScreenProps> = ({ navigation, route
   const { session, validation } = useScanSession(activeSessionId || undefined);
   const metrics = useARTracking();
 
+  // Scan Point Engine hooks
+  const points = useScanPoints(activeSessionId || undefined);
+  const { pointCount, totalFeaturePoints, lastCaptureStatus } = useScanPointStats();
+  const { startLoop, stopLoop, captureManualPoint, clearPoints } = useScanPointCapture();
+
   // Create session on mount if building is selected and no session active
   useEffect(() => {
     async function initSession() {
@@ -76,6 +87,18 @@ const ScanSessionScreen: React.FC<ScanSessionScreenProps> = ({ navigation, route
   const isPaused = status === 'PAUSED';
   const isCompleted = status === 'COMPLETED';
   const isCancelled = status === 'CANCELLED';
+
+  // Toggle scan point capture loop on status changes
+  useEffect(() => {
+    if (isScanning) {
+      startLoop();
+    } else {
+      stopLoop();
+    }
+    return () => {
+      stopLoop();
+    };
+  }, [isScanning, startLoop, stopLoop]);
 
   const handleStartOrPause = () => {
     if (!session) return;
@@ -103,6 +126,7 @@ const ScanSessionScreen: React.FC<ScanSessionScreenProps> = ({ navigation, route
   const handleReset = () => {
     if (session) {
       resetSession(session.sessionId);
+      clearPoints();
     }
   };
 
@@ -167,8 +191,8 @@ const ScanSessionScreen: React.FC<ScanSessionScreenProps> = ({ navigation, route
   return (
     <ScreenContainer scrollable padding={spacing.md} testID="scan-session-screen">
       <SectionHeader
-        title="Scan Session Engine"
-        subtitle="Indoor building scan session controller & progress tracker"
+        title="Building Scan Engine"
+        subtitle="Live spatial scan point capture & session controller"
         style={styles.header}
       />
 
@@ -187,10 +211,25 @@ const ScanSessionScreen: React.FC<ScanSessionScreenProps> = ({ navigation, route
       {/* 2. Progress & Timers Card */}
       {session && <ScanProgressCard session={session} />}
 
-      {/* 3. Real-time 6-DOF Pose Telemetry */}
+      {/* 3. Live Scan Point Capture Telemetry */}
+      <ScanPointLiveCard
+        metrics={metrics}
+        pointCount={pointCount}
+        totalFeaturePoints={totalFeaturePoints}
+        lastCaptureStatus={lastCaptureStatus}
+      />
+
+      {/* 4. Captured Scan Points Feed List */}
+      <ScanPointFeedCard
+        points={points}
+        onManualCapture={() => captureManualPoint()}
+        onClearPoints={clearPoints}
+      />
+
+      {/* 5. Real-time 6-DOF Pose Telemetry */}
       <ARPoseCard metrics={metrics} />
 
-      {/* 4. Controls */}
+      {/* 6. Session Controls */}
       <View style={styles.controlsGroup}>
         <PrimaryButton
           label={
@@ -233,9 +272,9 @@ const ScanSessionScreen: React.FC<ScanSessionScreenProps> = ({ navigation, route
       </View>
 
       <View style={styles.noteBox}>
-        <Text style={styles.noteTitle}>Phase 5B.1 Scan Session Controller</Text>
+        <Text style={styles.noteTitle}>Phase 5B.2 Scan Point Capture Engine</Text>
         <Text style={styles.noteText}>
-          Scan session lifecycle management, pre-scan validation, and progress tracking are active. 3D point cloud mesh extraction and SLAM scanning will be enabled in Phase 5B.2.
+          Spatial scan points are captured continuously during walk (1m movement, 25° rotation, or 2.5s interval). Point cloud triangulation and mesh generation will occur in future phases.
         </Text>
       </View>
     </ScreenContainer>

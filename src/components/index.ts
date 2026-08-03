@@ -25,3 +25,5 @@ export { default as ARAnchorsTestCard } from './ARAnchorsTestCard';
 export { default as ARSystemDiagnosticsCard } from './ARSystemDiagnosticsCard';
 export { default as ScanProgressCard } from './ScanProgressCard';
 export { default as ScanValidationCard } from './ScanValidationCard';
+export { default as ScanPointLiveCard } from './ScanPointLiveCard';
+export { default as ScanPointFeedCard } from './ScanPointFeedCard';
