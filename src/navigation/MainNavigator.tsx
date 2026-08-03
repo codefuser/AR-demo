@@ -7,6 +7,7 @@
  * Phase 4: Added ARStatusScreen.
  * Phase 5A: Added ARDiagnosticsScreen.
  * Phase 5B.1: Added ScanSessionScreen.
+ * Phase 5C.3: Added PlaneDiagnosticsScreen.
  */
 
 import React from 'react';
@@ -19,6 +20,7 @@ import {
   CameraScreen,
   ARStatusScreen,
   ARDiagnosticsScreen,
+  PlaneDiagnosticsScreen,
   ScanSessionScreen,
   SettingsScreen,
   AboutScreen,
@@ -92,6 +94,11 @@ const MainNavigator: React.FC = () => {
         name={MAIN_ROUTES.AR_DIAGNOSTICS}
         component={ARDiagnosticsScreen}
         options={{ title: 'AR Diagnostics' }}
+      />
+      <Stack.Screen
+        name={MAIN_ROUTES.PLANE_DIAGNOSTICS}
+        component={PlaneDiagnosticsScreen}
+        options={{ title: 'Real Plane Detection' }}
       />
       <Stack.Screen
         name={MAIN_ROUTES.SCAN_SESSION}

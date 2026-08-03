@@ -5,11 +5,11 @@
  * Provides typed functional calls to:
  *  - Native ARCore installation checks
  *  - Native Session initialization & controls (start, pause, resume, destroy)
- *  - Listening to native events: `onSessionStateChanged`, `onCameraPoseUpdated`, `onPointCloudUpdated`
+ *  - Listening to native events: `onSessionStateChanged`, `onCameraPoseUpdated`, `onPointCloudUpdated`, `onPlaneUpdated`, `onPlaneRemoved`
  */
 
 import { NativeModules, NativeEventEmitter, Platform } from 'react-native';
-import type { Vector3D, EulerAngles, Quaternion, ARTrackingQuality } from '../../../types/ar';
+import type { Vector3D, Vector2D, EulerAngles, Quaternion } from '../../../types/ar';
 import type { ARNativeTrackingState } from '../../../types/arNative';
 
 const { ARCoreNativeModule } = NativeModules;
@@ -37,6 +37,19 @@ export interface NativePointCloudPayload {
   points: NativePointCloudPoint[];
   timestamp: number;
   trackingState: ARNativeTrackingState;
+}
+
+export interface NativePlanePayload {
+  planeId: string;
+  type: 'HORIZONTAL_FLOOR' | 'VERTICAL_WALL' | 'CEILING' | 'UNKNOWN';
+  trackingState: ARNativeTrackingState;
+  centerPose: Vector3D;
+  extentX: number;
+  extentZ: number;
+  polygon: Vector2D[];
+  subsumedByPlaneId?: string;
+  timestamp: number;
+  frameNumber: number;
 }
 
 export interface ARCoreNativeModuleInterface {
@@ -164,6 +177,28 @@ class ARCoreNativeBridgeService {
   public subscribePointCloud(listener: (payload: NativePointCloudPayload) => void): () => void {
     if (this.eventEmitter) {
       const subscription = this.eventEmitter.addListener('onPointCloudUpdated', listener);
+      return () => subscription.remove();
+    }
+    return () => {};
+  }
+
+  /**
+   * Subscribes to real physical plane detection updates from native Frame.getUpdatedTrackables(Plane.class).
+   */
+  public subscribePlaneUpdated(listener: (payload: NativePlanePayload) => void): () => void {
+    if (this.eventEmitter) {
+      const subscription = this.eventEmitter.addListener('onPlaneUpdated', listener);
+      return () => subscription.remove();
+    }
+    return () => {};
+  }
+
+  /**
+   * Subscribes to plane removal events when planes are subsumed or tracking is stopped.
+   */
+  public subscribePlaneRemoved(listener: (payload: NativePlanePayload) => void): () => void {
+    if (this.eventEmitter) {
+      const subscription = this.eventEmitter.addListener('onPlaneRemoved', listener);
       return () => subscription.remove();
     }
     return () => {};

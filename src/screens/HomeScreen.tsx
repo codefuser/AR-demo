@@ -2,10 +2,10 @@
  * @file src/screens/HomeScreen.tsx
  * @description Application home screen.
  *
- * Serves as the main entry point after the splash screen.  Displays:
+ * Serves as the main entry point after the splash screen. Displays:
  *  - Application logo
  *  - Project name and tagline
- *  - Four primary navigation cards (Create Building, Buildings, Settings, About)
+ *  - Primary navigation cards (Create Building, Buildings, Camera, AR Status, AR Diagnostics, Real Plane Detection, Scan Controller, Settings, About)
  *
  * Design: Dark/light adaptive, gradient header band, animated card entrance.
  */
@@ -69,6 +69,15 @@ const MENU_ITEMS = [
     route: MAIN_ROUTES.AR_STATUS,
     color: '#8B5CF6',
     testID: 'home-btn-ar-status',
+  },
+  {
+    id: 'plane_diagnostics',
+    icon: 'floor-plan' as const,
+    label: 'Real Plane Detection',
+    subtitle: 'Google ARCore physical floor & wall surface detection',
+    route: MAIN_ROUTES.PLANE_DIAGNOSTICS,
+    color: '#D97706',
+    testID: 'home-btn-plane-diagnostics',
   },
   {
     id: 'ar_diagnostics',
@@ -220,8 +229,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           style={[
             styles.cardGap,
             {
-              opacity: cardAnimations[index].opacity,
-              transform: [{ translateY: cardAnimations[index].translateY }],
+              opacity: cardAnimations[index]?.opacity || 1,
+              transform: [{ translateY: cardAnimations[index]?.translateY || 0 }],
             },
           ]}
         >

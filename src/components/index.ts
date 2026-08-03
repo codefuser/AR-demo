@@ -28,3 +28,5 @@ export { default as ScanValidationCard } from './ScanValidationCard';
 export { default as ScanPointLiveCard } from './ScanPointLiveCard';
 export { default as ScanPointFeedCard } from './ScanPointFeedCard';
 export { default as PointCloudLiveCard } from './PointCloudLiveCard';
+export { default as PlaneSummaryCard } from './PlaneSummaryCard';
+export { default as PlaneListCard } from './PlaneListCard';

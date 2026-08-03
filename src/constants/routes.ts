@@ -4,6 +4,7 @@
  * Phase 4: Added AR_STATUS.
  * Phase 5A: Added AR_DIAGNOSTICS.
  * Phase 5B.1: Added SCAN_SESSION.
+ * Phase 5C.3: Added PLANE_DIAGNOSTICS.
  */
 
 /** Root stack route names. */
@@ -21,6 +22,7 @@ export const MAIN_ROUTES = {
   CAMERA: 'Camera',
   AR_STATUS: 'ARStatus',
   AR_DIAGNOSTICS: 'ARDiagnostics',
+  PLANE_DIAGNOSTICS: 'PlaneDiagnostics',
   SCAN_SESSION: 'ScanSession',
   SETTINGS: 'Settings',
   ABOUT: 'About',

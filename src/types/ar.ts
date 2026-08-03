@@ -13,6 +13,14 @@ export interface Vector3D {
 }
 
 /**
+ * 2D spatial vector coordinate (meters).
+ */
+export interface Vector2D {
+  x: number;
+  z: number;
+}
+
+/**
  * 4D Quaternion orientation representation.
  */
 export interface Quaternion {

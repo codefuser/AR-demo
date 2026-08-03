@@ -14,3 +14,4 @@ export * from './arNativeHooks';
 export * from './useScanSession';
 export * from './useScanPoint';
 export * from './usePointCloud';
+export * from './usePlane';
