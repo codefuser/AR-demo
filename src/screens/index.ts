@@ -10,5 +10,6 @@ export { default as CreateBuildingScreen } from './CreateBuildingScreen';
 export { default as BuildingDetailsScreen } from './BuildingDetailsScreen';
 export { default as CameraScreen } from './CameraScreen';
 export { default as ARStatusScreen } from './ARStatusScreen';
+export { default as ARDiagnosticsScreen } from './ARDiagnosticsScreen';
 export { default as SettingsScreen } from './SettingsScreen';
 export { default as AboutScreen } from './AboutScreen';

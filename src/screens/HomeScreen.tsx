@@ -71,6 +71,15 @@ const MENU_ITEMS = [
     testID: 'home-btn-ar-status',
   },
   {
+    id: 'ar_diagnostics',
+    icon: 'select-all' as const,
+    label: 'Native AR Diagnostics',
+    subtitle: 'Planes, Anchors, and AR Session foundation',
+    route: MAIN_ROUTES.AR_DIAGNOSTICS,
+    color: '#3B82F6',
+    testID: 'home-btn-ar-diagnostics',
+  },
+  {
     id: 'settings',
     icon: 'cog-outline' as const,
     label: APP_STRINGS.HOME_BTN_SETTINGS,

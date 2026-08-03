@@ -19,3 +19,7 @@ export { default as CameraPermissionCard } from './CameraPermissionCard';
 export { default as ARStatusBadge } from './ARStatusBadge';
 export { default as ARPoseCard } from './ARPoseCard';
 export { default as ARCapabilitiesCard } from './ARCapabilitiesCard';
+export { default as ARDiagnosticsHeader } from './ARDiagnosticsHeader';
+export { default as ARPlanesSummaryCard } from './ARPlanesSummaryCard';
+export { default as ARAnchorsTestCard } from './ARAnchorsTestCard';
+export { default as ARSystemDiagnosticsCard } from './ARSystemDiagnosticsCard';
