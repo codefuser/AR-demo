@@ -16,6 +16,7 @@ export { default as ScanSessionScreen } from './ScanSessionScreen';
 export { default as WalkthroughScreen } from './WalkthroughScreen';
 export { default as UnifiedScanScreen } from './UnifiedScanScreen';
 export { default as CoverageDiagnosticsScreen } from './CoverageDiagnosticsScreen';
+export { default as ScanValidationScreen } from './ScanValidationScreen';
 export { default as DeveloperOptionsScreen } from './DeveloperOptionsScreen';
 export { default as SettingsScreen } from './SettingsScreen';
 export { default as AboutScreen } from './AboutScreen';

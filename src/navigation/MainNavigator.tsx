@@ -12,6 +12,7 @@
  * UX Redesign: Added DeveloperOptionsScreen.
  * Phase 5C.5: Added UnifiedScanScreen.
  * Phase 5C.6: Added CoverageDiagnosticsScreen.
+ * Phase 5C.7: Added ScanValidationScreen.
  */
 
 import React from 'react';
@@ -29,6 +30,7 @@ import {
   WalkthroughScreen,
   UnifiedScanScreen,
   CoverageDiagnosticsScreen,
+  ScanValidationScreen,
   DeveloperOptionsScreen,
   SettingsScreen,
   AboutScreen,
@@ -127,6 +129,11 @@ const MainNavigator: React.FC = () => {
         name={MAIN_ROUTES.COVERAGE_DIAGNOSTICS}
         component={CoverageDiagnosticsScreen}
         options={{ title: 'Coverage Analysis' }}
+      />
+      <Stack.Screen
+        name={MAIN_ROUTES.SCAN_VALIDATION}
+        component={ScanValidationScreen}
+        options={{ title: 'Scan Validation QA' }}
       />
       <Stack.Screen
         name={MAIN_ROUTES.DEVELOPER_OPTIONS}

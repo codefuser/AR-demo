@@ -79,6 +79,15 @@ const DEV_MENU_ITEMS = [
     testID: 'dev-btn-coverage-diagnostics',
   },
   {
+    id: 'scan_validation',
+    icon: 'shield-check-outline' as const,
+    label: 'Scan Validation QA',
+    subtitle: 'Rule evaluation pipeline & quality decision gatekeeper',
+    route: MAIN_ROUTES.SCAN_VALIDATION,
+    color: '#8B5CF6',
+    testID: 'dev-btn-scan-validation',
+  },
+  {
     id: 'scan_session',
     icon: 'radar' as const,
     label: 'Scan Building Controller',

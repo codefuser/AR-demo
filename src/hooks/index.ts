@@ -18,3 +18,4 @@ export * from './usePlane';
 export * from './useWalkthrough';
 export * from './useBuildingScanWorkflow';
 export * from './useCoverage';
+export * from './useScanValidation';
