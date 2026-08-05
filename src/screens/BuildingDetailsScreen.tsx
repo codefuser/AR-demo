@@ -1,18 +1,18 @@
 /**
  * @file src/screens/BuildingDetailsScreen.tsx
- * @description Building Details screen.
+ * @description Building Details Screen — Clean Production Product UX.
  *
- * Displays detailed information about a selected building:
- *  - Building Information (ID, Name, Description, Address, Type, Floor Count, Dates)
- *  - Building Status (Scan status with StatusBadge)
- *  - Action Buttons:
- *    • Start Scanning (Disabled — Phase 3)
- *    • Edit Building (Navigates back to form in edit mode)
- *    • Delete Building (With confirmation modal)
+ * Displays:
+ *  - Building Information (ID, Name, Description, Address, Category, Floor Count, Dates, Scan Status)
+ *  - Action Suite:
+ *    1. Scan Building (Launches unified AR Scan experience automatically starting background engines)
+ *    2. Generate QR Code (Placeholder action for Phase 6)
+ *    3. Edit Building (Navigates to building form in edit mode)
+ *    4. Delete Building (With confirmation modal)
  */
 
 import React from 'react';
-import { View, Text, StyleSheet, Alert, ScrollView, Platform } from 'react-native';
+import { View, Text, StyleSheet, Alert, Platform } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -31,7 +31,7 @@ type BuildingDetailsScreenProps = {
 };
 
 /**
- * Building details screen displaying status, metadata, and administrator actions.
+ * Building details screen displaying metadata and primary administrator actions.
  */
 const BuildingDetailsScreen: React.FC<BuildingDetailsScreenProps> = ({
   navigation,
@@ -75,6 +75,22 @@ const BuildingDetailsScreen: React.FC<BuildingDetailsScreenProps> = ({
 
   const handleEdit = () => {
     navigation.navigate(MAIN_ROUTES.CREATE_BUILDING, { editId: building.id });
+  };
+
+  const handleGenerateQR = () => {
+    Alert.alert(
+      'Generate QR Marker',
+      `QR Anchor generation placeholder for ${building.name}. QR alignment markers will be supported in Phase 6.`,
+      [{ text: 'OK' }],
+    );
+  };
+
+  const handleStartScan = () => {
+    navigation.navigate(MAIN_ROUTES.SCAN_SESSION, {
+      buildingId: building.id,
+      buildingName: building.name,
+      floor: 1,
+    });
   };
 
   const typeLabel = getBuildingTypeLabel(building.buildingType);
@@ -158,19 +174,12 @@ const BuildingDetailsScreen: React.FC<BuildingDetailsScreenProps> = ({
       gap: spacing.sm,
       marginTop: spacing.md,
     },
-    disabledNote: {
-      fontSize: typography.fontSize.xs,
-      color: colors.textMuted,
-      textAlign: 'center',
-      marginTop: -spacing.xs,
-      marginBottom: spacing.xs,
-    },
   });
 
   return (
     <ScreenContainer scrollable padding={spacing.md} testID="building-details-screen">
       <View style={styles.content}>
-        {/* Main Building Card */}
+        {/* Main Building Header Card */}
         <View style={styles.card}>
           <View style={styles.headerRow}>
             <View style={{ flex: 1, marginRight: spacing.sm }}>
@@ -227,33 +236,27 @@ const BuildingDetailsScreen: React.FC<BuildingDetailsScreenProps> = ({
           </View>
         </View>
 
-        {/* Actions */}
+        {/* Actions Suite */}
         <Text style={styles.sectionTitle}>{APP_STRINGS.BUILDING_DETAILS_ACTIONS_SECTION}</Text>
         <View style={styles.actionSection}>
-          {/* Start Building Scan Session */}
+          {/* 1. Scan Building */}
           <PrimaryButton
-            label="Start Building Scan Session"
+            label="Scan Building"
             icon="radar"
-            onPress={() =>
-              navigation.navigate(MAIN_ROUTES.SCAN_SESSION, {
-                buildingId: building.id,
-                buildingName: building.name,
-                floor: 1,
-              })
-            }
-            testID="btn-start-scanning"
+            onPress={handleStartScan}
+            testID="btn-scan-building"
           />
 
-          {/* Test Camera Module */}
+          {/* 2. Generate QR Code (Placeholder) */}
           <PrimaryButton
-            label="Test Camera Module"
-            icon="camera-outline"
+            label="Generate QR Code"
+            icon="qrcode"
             mode="outlined"
-            onPress={() => navigation.navigate(MAIN_ROUTES.CAMERA, { buildingId: building.id })}
-            testID="btn-test-camera"
+            onPress={handleGenerateQR}
+            testID="btn-generate-qr"
           />
 
-          {/* Edit Building */}
+          {/* 3. Edit Building */}
           <PrimaryButton
             label={APP_STRINGS.BUILDING_DETAILS_BTN_EDIT}
             icon="pencil-outline"
@@ -262,7 +265,7 @@ const BuildingDetailsScreen: React.FC<BuildingDetailsScreenProps> = ({
             testID="btn-edit-building"
           />
 
-          {/* Delete Building */}
+          {/* 4. Delete Building */}
           <PrimaryButton
             label={APP_STRINGS.BUILDING_DETAILS_BTN_DELETE}
             icon="trash-can-outline"

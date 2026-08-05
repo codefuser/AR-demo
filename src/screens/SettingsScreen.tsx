@@ -2,22 +2,31 @@
  * @file src/screens/SettingsScreen.tsx
  * @description Application settings screen.
  *
- * Phase 1: Exposes the dark mode toggle.
- * Phase 2+: Will include notification preferences, data management, etc.
+ * Includes:
+ *  - Dark mode toggle
+ *  - Developer Options section (Navigates to DeveloperOptionsScreen)
  */
 
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Switch } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAppTheme } from '../hooks/useAppTheme';
 import { ScreenContainer, SectionHeader } from '../components';
 import { useAppStore } from '../store';
 import { APP_STRINGS } from '../constants/strings';
+import { MAIN_ROUTES } from '../constants/routes';
+import type { MainStackParamList } from '../types';
+
+type SettingsScreenProps = {
+  navigation: NativeStackNavigationProp<MainStackParamList, 'Settings'>;
+};
 
 /**
- * Settings screen with theme toggle.
+ * Settings screen with theme toggle and Developer Options access.
  */
-const SettingsScreen: React.FC = () => {
+const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
   const { theme, isDark } = useAppTheme();
   const { colors, spacing, typography, borderRadius } = theme.custom;
   const toggleColorScheme = useAppStore((s) => s.toggleColorScheme);
@@ -64,17 +73,6 @@ const SettingsScreen: React.FC = () => {
       fontSize: typography.fontSize.xs,
       color: colors.onSurfaceVariant,
     },
-    comingSoonBadge: {
-      paddingHorizontal: spacing.sm,
-      paddingVertical: 3,
-      borderRadius: borderRadius.full,
-      backgroundColor: `${colors.secondary}22`,
-    },
-    comingSoonText: {
-      fontSize: typography.fontSize.xs,
-      color: colors.secondary,
-      fontWeight: typography.fontWeight.semiBold,
-    },
   });
 
   return (
@@ -102,30 +100,21 @@ const SettingsScreen: React.FC = () => {
         </View>
       </View>
 
-      {/* ── Future Settings (Phase 2+) ──────────────────────────────────── */}
-      <Text style={styles.sectionGroupTitle}>Data & Storage</Text>
+      {/* ── Developer Mode ──────────────────────────────────────────────── */}
+      <Text style={styles.sectionGroupTitle}>Engineering</Text>
       <View style={styles.sectionGroup}>
-        <View style={styles.row}>
+        <TouchableOpacity
+          style={styles.row}
+          onPress={() => navigation.navigate(MAIN_ROUTES.DEVELOPER_OPTIONS)}
+          activeOpacity={0.7}
+          testID="btn-developer-options"
+        >
           <View style={styles.rowTextContainer}>
-            <Text style={styles.rowTitle}>Database Management</Text>
-            <Text style={styles.rowSubtitle}>Export, import, or clear building data</Text>
+            <Text style={styles.rowTitle}>Developer Options</Text>
+            <Text style={styles.rowSubtitle}>Camera, AR tracking, planes & diagnostic tools</Text>
           </View>
-          <View style={styles.comingSoonBadge}>
-            <Text style={styles.comingSoonText}>Phase 2</Text>
-          </View>
-        </View>
-
-        <View style={styles.rowDivider} />
-
-        <View style={styles.row}>
-          <View style={styles.rowTextContainer}>
-            <Text style={styles.rowTitle}>AR Calibration</Text>
-            <Text style={styles.rowSubtitle}>Configure AR tracking parameters</Text>
-          </View>
-          <View style={styles.comingSoonBadge}>
-            <Text style={styles.comingSoonText}>Phase 3</Text>
-          </View>
-        </View>
+          <MaterialCommunityIcons name="chevron-right" size={24} color={colors.onSurfaceVariant} />
+        </TouchableOpacity>
       </View>
     </ScreenContainer>
   );

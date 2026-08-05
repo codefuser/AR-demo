@@ -69,6 +69,7 @@ export type MainStackParamList = {
   PlaneDiagnostics: undefined;
   ScanSession: { buildingId?: string; buildingName?: string; floor?: number } | undefined;
   Walkthrough: { buildingId?: string; buildingName?: string; floor?: number } | undefined;
+  DeveloperOptions: undefined;
   Settings: undefined;
   About: undefined;
 };

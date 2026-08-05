@@ -1,13 +1,14 @@
 /**
  * @file src/screens/HomeScreen.tsx
- * @description Application home screen.
+ * @description Product Home Screen — Clean, End-User Business Dashboard.
  *
- * Serves as the main entry point after the splash screen. Displays:
- *  - Application logo
- *  - Project name and tagline
- *  - Primary navigation cards (Create Building, Buildings, Camera, AR Status, AR Diagnostics, Real Plane Detection, Walkthrough Engine, Scan Controller, Settings, About)
+ * Displays ONLY primary business features:
+ *  - Create Building
+ *  - My Buildings
+ *  - Settings
+ *  - About
  *
- * Design: Dark/light adaptive, gradient header band, animated card entrance.
+ * Engineering & diagnostic modules are relocated to Settings ➔ Developer Options.
  */
 
 import React, { useEffect, useRef } from 'react';
@@ -15,9 +16,7 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   Animated,
-  Dimensions,
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAppTheme } from '../hooks/useAppTheme';
@@ -26,19 +25,17 @@ import { APP_STRINGS } from '../constants/strings';
 import { MAIN_ROUTES } from '../constants/routes';
 import type { MainStackParamList } from '../types';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-
 type HomeScreenProps = {
   navigation: NativeStackNavigationProp<MainStackParamList, 'Home'>;
 };
 
-/** Menu card data — keeps JSX clean and makes it easy to add entries later. */
+/** Business Feature Menu Items — Clean product focus */
 const MENU_ITEMS = [
   {
     id: 'create',
     icon: 'office-building-plus' as const,
     label: APP_STRINGS.HOME_BTN_CREATE_BUILDING,
-    subtitle: 'Define a new indoor building',
+    subtitle: 'Define a new indoor building & floor plan',
     route: MAIN_ROUTES.CREATE_BUILDING,
     color: '#4F46E5',
     testID: 'home-btn-create-building',
@@ -47,70 +44,16 @@ const MENU_ITEMS = [
     id: 'buildings',
     icon: 'city' as const,
     label: APP_STRINGS.HOME_BTN_BUILDINGS,
-    subtitle: 'Browse and manage your buildings',
+    subtitle: 'Browse, manage, and scan your buildings',
     route: MAIN_ROUTES.BUILDINGS,
     color: '#0EA5E9',
     testID: 'home-btn-buildings',
   },
   {
-    id: 'camera',
-    icon: 'camera-outline' as const,
-    label: 'Camera Module',
-    subtitle: 'Test camera preview and image capture',
-    route: MAIN_ROUTES.CAMERA,
-    color: '#EC4899',
-    testID: 'home-btn-camera',
-  },
-  {
-    id: 'ar_status',
-    icon: 'cube-scan' as const,
-    label: 'AR Tracking Engine',
-    subtitle: 'Real-time 6-DOF spatial pose & device telemetry',
-    route: MAIN_ROUTES.AR_STATUS,
-    color: '#8B5CF6',
-    testID: 'home-btn-ar-status',
-  },
-  {
-    id: 'walkthrough',
-    icon: 'walk' as const,
-    label: 'Building Walkthrough Engine',
-    subtitle: 'Indoor walking analysis & live AR user guidance',
-    route: MAIN_ROUTES.WALKTHROUGH,
-    color: '#E11D48',
-    testID: 'home-btn-walkthrough',
-  },
-  {
-    id: 'plane_diagnostics',
-    icon: 'floor-plan' as const,
-    label: 'Real Plane Detection',
-    subtitle: 'Google ARCore physical floor & wall surface detection',
-    route: MAIN_ROUTES.PLANE_DIAGNOSTICS,
-    color: '#D97706',
-    testID: 'home-btn-plane-diagnostics',
-  },
-  {
-    id: 'ar_diagnostics',
-    icon: 'select-all' as const,
-    label: 'Native AR Diagnostics',
-    subtitle: 'Planes, Anchors, and AR Session foundation',
-    route: MAIN_ROUTES.AR_DIAGNOSTICS,
-    color: '#3B82F6',
-    testID: 'home-btn-ar-diagnostics',
-  },
-  {
-    id: 'scan_session',
-    icon: 'radar' as const,
-    label: 'Scan Building Controller',
-    subtitle: 'Building scan session lifecycle & progress controller',
-    route: MAIN_ROUTES.SCAN_SESSION,
-    color: '#059669',
-    testID: 'home-btn-scan-session',
-  },
-  {
     id: 'settings',
     icon: 'cog-outline' as const,
     label: APP_STRINGS.HOME_BTN_SETTINGS,
-    subtitle: 'Appearance and preferences',
+    subtitle: 'Appearance and app preferences',
     route: MAIN_ROUTES.SETTINGS,
     color: '#10B981',
     testID: 'home-btn-settings',
@@ -119,7 +62,7 @@ const MENU_ITEMS = [
     id: 'about',
     icon: 'information-outline' as const,
     label: APP_STRINGS.HOME_BTN_ABOUT,
-    subtitle: 'Project info and tech stack',
+    subtitle: 'System information and project specs',
     route: MAIN_ROUTES.ABOUT,
     color: '#F59E0B',
     testID: 'home-btn-about',
@@ -127,44 +70,42 @@ const MENU_ITEMS = [
 ] as const;
 
 /**
- * Home screen with animated entrance and themed menu cards.
+ * Home screen with clean MD3 layout and entrance animations.
  */
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { theme } = useAppTheme();
   const { colors, spacing, typography, borderRadius } = theme.custom;
 
-  // Staggered card entrance animations
+  // Entrance animations for cards
   const cardAnimations = useRef(
     MENU_ITEMS.map(() => ({
       opacity: new Animated.Value(0),
-      translateY: new Animated.Value(30),
+      translateY: new Animated.Value(20),
     })),
   ).current;
 
   const headerAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Header fades in first
     Animated.timing(headerAnim, {
       toValue: 1,
-      duration: 500,
+      duration: 400,
       useNativeDriver: true,
     }).start();
 
-    // Then cards stagger in
     const animations = cardAnimations.map(({ opacity, translateY }, index) =>
       Animated.parallel([
         Animated.timing(opacity, {
           toValue: 1,
-          duration: 400,
-          delay: 300 + index * 100,
+          duration: 350,
+          delay: 150 + index * 80,
           useNativeDriver: true,
         }),
         Animated.spring(translateY, {
           toValue: 0,
-          friction: 7,
-          tension: 70,
-          delay: 300 + index * 100,
+          friction: 8,
+          tension: 80,
+          delay: 150 + index * 80,
           useNativeDriver: true,
         }),
       ]),
@@ -229,8 +170,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         <Text style={styles.tagline}>{APP_STRINGS.HOME_TAGLINE}</Text>
       </Animated.View>
 
-      {/* ── Menu Cards ──────────────────────────────────────────────────── */}
-      <Text style={styles.sectionLabel}>Quick Access</Text>
+      {/* ── Primary Business Features ───────────────────────────────────── */}
+      <Text style={styles.sectionLabel}>Main Navigation</Text>
 
       {MENU_ITEMS.map(({ id, icon, label, subtitle, route, color, testID }, index) => (
         <Animated.View

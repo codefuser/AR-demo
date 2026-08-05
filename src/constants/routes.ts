@@ -6,6 +6,7 @@
  * Phase 5B.1: Added SCAN_SESSION.
  * Phase 5C.3: Added PLANE_DIAGNOSTICS.
  * Phase 5C.4: Added WALKTHROUGH.
+ * UX Redesign: Added DEVELOPER_OPTIONS.
  */
 
 /** Root stack route names. */
@@ -26,6 +27,7 @@ export const MAIN_ROUTES = {
   PLANE_DIAGNOSTICS: 'PlaneDiagnostics',
   SCAN_SESSION: 'ScanSession',
   WALKTHROUGH: 'Walkthrough',
+  DEVELOPER_OPTIONS: 'DeveloperOptions',
   SETTINGS: 'Settings',
   ABOUT: 'About',
 } as const;
