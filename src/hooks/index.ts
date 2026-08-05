@@ -16,3 +16,4 @@ export * from './useScanPoint';
 export * from './usePointCloud';
 export * from './usePlane';
 export * from './useWalkthrough';
+export * from './useBuildingScanWorkflow';

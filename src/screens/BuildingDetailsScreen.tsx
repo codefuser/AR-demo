@@ -86,7 +86,7 @@ const BuildingDetailsScreen: React.FC<BuildingDetailsScreenProps> = ({
   };
 
   const handleStartScan = () => {
-    navigation.navigate(MAIN_ROUTES.SCAN_SESSION, {
+    navigation.navigate(MAIN_ROUTES.UNIFIED_SCAN, {
       buildingId: building.id,
       buildingName: building.name,
       floor: 1,

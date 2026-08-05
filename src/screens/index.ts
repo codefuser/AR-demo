@@ -14,6 +14,7 @@ export { default as ARDiagnosticsScreen } from './ARDiagnosticsScreen';
 export { default as PlaneDiagnosticsScreen } from './PlaneDiagnosticsScreen';
 export { default as ScanSessionScreen } from './ScanSessionScreen';
 export { default as WalkthroughScreen } from './WalkthroughScreen';
+export { default as UnifiedScanScreen } from './UnifiedScanScreen';
 export { default as DeveloperOptionsScreen } from './DeveloperOptionsScreen';
 export { default as SettingsScreen } from './SettingsScreen';
 export { default as AboutScreen } from './AboutScreen';

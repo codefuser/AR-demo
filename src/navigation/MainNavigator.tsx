@@ -10,6 +10,7 @@
  * Phase 5C.3: Added PlaneDiagnosticsScreen.
  * Phase 5C.4: Added WalkthroughScreen.
  * UX Redesign: Added DeveloperOptionsScreen.
+ * Phase 5C.5: Added UnifiedScanScreen.
  */
 
 import React from 'react';
@@ -25,6 +26,7 @@ import {
   PlaneDiagnosticsScreen,
   ScanSessionScreen,
   WalkthroughScreen,
+  UnifiedScanScreen,
   DeveloperOptionsScreen,
   SettingsScreen,
   AboutScreen,
@@ -107,12 +109,17 @@ const MainNavigator: React.FC = () => {
       <Stack.Screen
         name={MAIN_ROUTES.SCAN_SESSION}
         component={ScanSessionScreen}
-        options={{ title: 'Scan Building' }}
+        options={{ title: 'Scan Controller Debug' }}
       />
       <Stack.Screen
         name={MAIN_ROUTES.WALKTHROUGH}
         component={WalkthroughScreen}
         options={{ title: 'Walkthrough Controller' }}
+      />
+      <Stack.Screen
+        name={MAIN_ROUTES.UNIFIED_SCAN}
+        component={UnifiedScanScreen}
+        options={{ title: 'Scan Building' }}
       />
       <Stack.Screen
         name={MAIN_ROUTES.DEVELOPER_OPTIONS}
