@@ -10,6 +10,7 @@
  * Phase 5C.5: Added UNIFIED_SCAN.
  * Phase 5C.6: Added COVERAGE_DIAGNOSTICS.
  * Phase 5C.7: Added SCAN_VALIDATION.
+ * Phase 5C.8: Added SCAN_FINALIZATION_SUCCESS.
  */
 
 /** Root stack route names. */
@@ -33,6 +34,7 @@ export const MAIN_ROUTES = {
   UNIFIED_SCAN: 'UnifiedScan',
   COVERAGE_DIAGNOSTICS: 'CoverageDiagnostics',
   SCAN_VALIDATION: 'ScanValidation',
+  SCAN_FINALIZATION_SUCCESS: 'ScanFinalizationSuccess',
   DEVELOPER_OPTIONS: 'DeveloperOptions',
   SETTINGS: 'Settings',
   ABOUT: 'About',

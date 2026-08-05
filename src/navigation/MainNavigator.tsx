@@ -13,6 +13,7 @@
  * Phase 5C.5: Added UnifiedScanScreen.
  * Phase 5C.6: Added CoverageDiagnosticsScreen.
  * Phase 5C.7: Added ScanValidationScreen.
+ * Phase 5C.8: Added ScanFinalizationSuccessScreen.
  */
 
 import React from 'react';
@@ -31,6 +32,7 @@ import {
   UnifiedScanScreen,
   CoverageDiagnosticsScreen,
   ScanValidationScreen,
+  ScanFinalizationSuccessScreen,
   DeveloperOptionsScreen,
   SettingsScreen,
   AboutScreen,
@@ -134,6 +136,11 @@ const MainNavigator: React.FC = () => {
         name={MAIN_ROUTES.SCAN_VALIDATION}
         component={ScanValidationScreen}
         options={{ title: 'Scan Validation QA' }}
+      />
+      <Stack.Screen
+        name={MAIN_ROUTES.SCAN_FINALIZATION_SUCCESS}
+        component={ScanFinalizationSuccessScreen}
+        options={{ title: 'Scan Finalized' }}
       />
       <Stack.Screen
         name={MAIN_ROUTES.DEVELOPER_OPTIONS}

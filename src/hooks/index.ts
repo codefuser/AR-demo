@@ -19,3 +19,4 @@ export * from './useWalkthrough';
 export * from './useBuildingScanWorkflow';
 export * from './useCoverage';
 export * from './useScanValidation';
+export * from './useBuildingScanFinalization';

@@ -88,6 +88,15 @@ const DEV_MENU_ITEMS = [
     testID: 'dev-btn-scan-validation',
   },
   {
+    id: 'scan_finalization_success',
+    icon: 'check-decagram-outline' as const,
+    label: 'Scan Finalization Preview',
+    subtitle: 'Atomic persistence & scan summary dashboard',
+    route: MAIN_ROUTES.SCAN_FINALIZATION_SUCCESS,
+    color: '#059669',
+    testID: 'dev-btn-scan-finalization-success',
+  },
+  {
     id: 'scan_session',
     icon: 'radar' as const,
     label: 'Scan Building Controller',

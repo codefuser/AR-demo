@@ -72,6 +72,7 @@ export type MainStackParamList = {
   UnifiedScan: { buildingId?: string; buildingName?: string; floor?: number } | undefined;
   CoverageDiagnostics: undefined;
   ScanValidation: undefined;
+  ScanFinalizationSuccess: { buildingId?: string; buildingName?: string } | undefined;
   DeveloperOptions: undefined;
   Settings: undefined;
   About: undefined;
@@ -233,3 +234,4 @@ export * from './walkthrough';
 export * from './buildingScanWorkflow';
 export * from './coverage';
 export * from './scanValidation';
+export * from './buildingScanFinalization';

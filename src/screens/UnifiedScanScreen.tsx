@@ -19,6 +19,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '../hooks/useAppTheme';
 import { useBuildingStore } from '../store';
 import { useBuildingScanWorkflow, useBuildingScanWorkflowControl } from '../hooks/useBuildingScanWorkflow';
+import { BuildingScanFinalizationManager } from '../services/finalization/BuildingScanFinalizationManager';
 import {
   ScreenContainer,
   SectionHeader,
@@ -60,17 +61,18 @@ const UnifiedScanScreen: React.FC<UnifiedScanScreenProps> = ({ navigation, route
   const isPreview = snapshot.state === 'PREVIEW';
   const isCompleted = snapshot.state === 'COMPLETED';
 
+  const bId = building?.id || targetBuildingId || 'demo_building_1';
+  const bName = building?.name || route.params?.buildingName || 'Sample Building';
+
   useEffect(() => {
-    const bId = building?.id || targetBuildingId || 'demo_building_1';
-    const bName = building?.name || route.params?.buildingName || 'Sample Building';
     const floor = route.params?.floor || 1;
 
     startWorkflow(bId, bName, floor);
 
     return () => {
-      // Auto-cleanup on unmount if left scanning
+      cancelWorkflow();
     };
-  }, [targetBuildingId]);
+  }, [bId, bName]);
 
   const handlePauseResume = () => {
     if (isScanning) {
@@ -80,9 +82,10 @@ const UnifiedScanScreen: React.FC<UnifiedScanScreenProps> = ({ navigation, route
     }
   };
 
-  const handleSaveAndReturn = () => {
+  const handleSaveAndReturn = async () => {
     saveScan();
-    navigation.navigate(MAIN_ROUTES.BUILDINGS);
+    await BuildingScanFinalizationManager.getInstance().finalizeScanSession(bId, bName);
+    navigation.navigate(MAIN_ROUTES.SCAN_FINALIZATION_SUCCESS, { buildingId: bId, buildingName: bName });
   };
 
   const handleDiscardAndReturn = () => {
