@@ -33,3 +33,5 @@ export { default as PlaneListCard } from './PlaneListCard';
 export { default as WalkthroughHeaderCard } from './WalkthroughHeaderCard';
 export { default as WalkthroughTelemetryCard } from './WalkthroughTelemetryCard';
 export { default as WalkthroughGuidanceCard } from './WalkthroughGuidanceCard';
+export { default as CoverageSummaryCard } from './CoverageSummaryCard';
+export { default as CoverageDiagnosticsCard } from './CoverageDiagnosticsCard';

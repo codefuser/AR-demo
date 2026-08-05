@@ -8,6 +8,7 @@
  * Phase 5C.4: Added WALKTHROUGH.
  * UX Redesign: Added DEVELOPER_OPTIONS.
  * Phase 5C.5: Added UNIFIED_SCAN.
+ * Phase 5C.6: Added COVERAGE_DIAGNOSTICS.
  */
 
 /** Root stack route names. */
@@ -29,6 +30,7 @@ export const MAIN_ROUTES = {
   SCAN_SESSION: 'ScanSession',
   WALKTHROUGH: 'Walkthrough',
   UNIFIED_SCAN: 'UnifiedScan',
+  COVERAGE_DIAGNOSTICS: 'CoverageDiagnostics',
   DEVELOPER_OPTIONS: 'DeveloperOptions',
   SETTINGS: 'Settings',
   ABOUT: 'About',

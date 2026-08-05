@@ -70,6 +70,15 @@ const DEV_MENU_ITEMS = [
     testID: 'dev-btn-walkthrough',
   },
   {
+    id: 'coverage_diagnostics',
+    icon: 'chart-donut' as const,
+    label: 'Coverage Analysis Engine',
+    subtitle: '2D spatial grid cell hashing & 5-factor quality scores',
+    route: MAIN_ROUTES.COVERAGE_DIAGNOSTICS,
+    color: '#10B981',
+    testID: 'dev-btn-coverage-diagnostics',
+  },
+  {
     id: 'scan_session',
     icon: 'radar' as const,
     label: 'Scan Building Controller',
